@@ -4,27 +4,22 @@
  * @param {string} [param="asc"] param - the sorting type "asc" or "desc"
  * @returns {string[]}
  */
-export function sortStrings(...props) { 
-
-    const [data, param = 'asc', ...other] = props;   
+export function sortStrings(arr, param = 'asc') {   
 
     const sortableData = {
-        data: data,
+        data: arr,
         sortDirection: param,
     };
 
-    const newSortedArray = ({data, sortDirection}) => {   
-
+    const newSortedArray = ({data, sortDirection}) => { 
         const caseFirst = sortDirection === 'asc' ? 'upper' : 'lower';
-
         const result = data.slice().sort((a, b) => {
-            return a.localeCompare(b, ['ru-RU', 'en-US'], {caseFirst: caseFirst})
+            if (sortDirection === 'asc') {
+                return a.localeCompare(b, ['ru-RU', 'en-US'], {caseFirst: caseFirst});
+            }
+            return b.localeCompare(a, ['ru-RU', 'en-US'], {caseFirst: caseFirst});
         });
-
-        return sortDirection === 'asc' ? result : result.reverse();      
-        
+        return result; 
     };
-
     return newSortedArray(sortableData);
-
 };

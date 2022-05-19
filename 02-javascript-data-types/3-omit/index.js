@@ -4,35 +4,11 @@
  * @param {...string} fields - the properties paths to omit
  * @returns {object} - returns the new object
  */
-export const omit = (...props) => {
-
-    const [obj, ...fields] = props;
-
-    const ignoreKeys = (fields, obj) => {
-        if (fields.length !== 0) {            
-            const newArrResults = [];
-            const filteredFields = fields => {
-                const allKeys = Object.keys(obj);
-                fields.forEach((field) => {                    
-                    if(allKeys.includes(field)) {
-                        allKeys.splice(allKeys.indexOf(field), 1);
-                        return;
-                    }
-                });   
-                return allKeys;    
-            };        
-    
-            filteredFields(fields).forEach(readyKey => {     
-                Object.entries(obj).map(([key, value]) => {
-                    if (key.includes(readyKey)) {                   
-                        newArrResults.push([key, value])
-                    }
-                });    
-            });
-            return Object.fromEntries(newArrResults);
+export const omit = (obj, ...fields) => {
+    return Object.fromEntries(Object.entries(obj).reduce((acc, el) => {
+        if (fields.includes(el[0])) {
+            return acc;
         }
-        return obj; 
-    };
-    return ignoreKeys(fields, obj);
-
+        return acc.concat([el]);
+    }, []));
 };

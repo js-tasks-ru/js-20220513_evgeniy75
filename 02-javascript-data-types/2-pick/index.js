@@ -4,20 +4,11 @@
  * @param {...string} fields - the properties paths to pick
  * @returns {object} - returns the new object
  */
-export const pick = (...props) => {
-
-    const [obj, ...fields] = props;
-
-    const searchKeys = (fields, obj) => {
-        const newArrResults = [];
-        fields.forEach(fieldKey => {
-            Object.entries(obj).map(([key, value]) => {
-                if (key.includes(fieldKey)) {
-                    newArrResults.push([key, value])
-                }
-            });
-        });
-        return Object.fromEntries(newArrResults);
-    }
-    return searchKeys(fields, obj);
+export const pick = (obj, ...fields) => {
+    return Object.fromEntries(Object.entries(obj).reduce((acc, el) => {
+        if (fields.includes(el[0])) {
+            return acc.concat([el]);
+        }
+        return acc;
+    }, []));    
 };
