@@ -5,4 +5,11 @@
  */
 export function invertObj(obj) {
 
+    if (obj) {
+        return Object.fromEntries(Object.entries(obj).map(([key, value]) => {
+            return [value, key];
+        }));
+    }
+    return undefined;
+
 }
