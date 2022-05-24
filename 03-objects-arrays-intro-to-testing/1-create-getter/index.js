@@ -5,4 +5,19 @@
  */
 export function createGetter(path) {
 
+    const properties = path.split('.');
+
+    return (obj) => {
+        let result = obj;
+        for (const el of properties) {
+            if (Object.keys(result).includes(el)) {
+                result = result[el];
+            }
+            else {
+                return undefined;
+            }
+        }
+        return result;
+    };
+
 }
