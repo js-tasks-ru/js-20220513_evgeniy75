@@ -1,7 +1,5 @@
 export default class NotificationMessage {
 
-    static previousMessage;
-
     constructor(
         message = '', {
             duration = 0,
@@ -10,7 +8,6 @@ export default class NotificationMessage {
         this.message = message;
         this.duration = duration;
         this.type = type;
-        this.previousMessage = NotificationMessage.previousMessage;
         this.render();
     }
 
