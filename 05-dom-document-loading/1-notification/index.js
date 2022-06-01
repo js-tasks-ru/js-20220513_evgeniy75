@@ -1,5 +1,7 @@
 export default class NotificationMessage {
 
+    static previousMessage;
+
     constructor(
         message = '', {
             duration = 0,
@@ -13,7 +15,7 @@ export default class NotificationMessage {
 
     template() {
         return `
-        <div class="notification ${this.type}" style="--value:${this.duration}s">
+        <div class="notification ${this.type}" style="--value:${(this.duration / 1000) + 's'}">
             <div class="timer"></div>
                 <div class="inner-wrapper">
                 <div class="notification-header">success</div>
@@ -26,26 +28,34 @@ export default class NotificationMessage {
     }
 
     show(el) {
-        if (el) {
-            el.innerHTML = this.template();
+        if (NotificationMessage.previousMessage) {
+            NotificationMessage.previousMessage.remove();
         }
+        NotificationMessage.previousMessage = this.element;
+        const btn = document.querySelector('#btn1');
         this.closeMessage();
+        if (btn) {
+            btn.after(this.element);
+            return
+        }
+        if (el) {
+            el.append(this.element);
+            return
+        }
     }
 
     render() {
-        const el = document.createElement('div')
-        el.innerHTML = this.template()
-        this.element = el.firstElementChild
+        const el = document.createElement('div');
+        el.innerHTML = this.template();
+        this.element = el.firstElementChild;
         this.closeMessage();
     }
 
     closeMessage() {
-        if (this.duration) {
-            return setTimeout(() => { this.remove() }, this.duration);
-        }
+        return setTimeout(() => { this.remove() }, this.duration);
     }
 
-    remove() {
+    remove(time) {
         this.element.remove();
     }
 
